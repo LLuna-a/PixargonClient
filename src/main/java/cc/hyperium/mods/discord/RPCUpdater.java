@@ -43,9 +43,9 @@ public class RPCUpdater {
 
         client.sendRichPresence(builder
             .setSmallImage("compass")
-            .setLargeImage("hyperium", "Hyperium Client")
-            .setState("IGN: " + Minecraft.getMinecraft().getSession().getUsername())
-            .setDetails("On the main menu")
+            .setLargeImage("hyperium", "Pixargon Client")
+            .setState("Nick: " + Minecraft.getMinecraft().getSession().getUsername())
+            .setDetails("Ana Menude")
             .setStartTimestamp(OffsetDateTime.now())
             .build());
     }
@@ -58,16 +58,16 @@ public class RPCUpdater {
             client.sendRichPresence(Hyperium.INSTANCE.getHandlers().getHypixelDetector().isHypixel() ?
                 builder
                     .setSmallImage("compass")
-                    .setLargeImage("16", "Hypixel Network")
-                    .setState("IGN: " + Minecraft.getMinecraft().getSession().getUsername())
-                    .setDetails("In the lobby on hypixel.net")
+                    .setLargeImage("16", "Pixargon Network")
+                    .setState("Nick: " + Minecraft.getMinecraft().getSession().getUsername())
+                    .setDetails("Pixargon Craftta!")
                     .setStartTimestamp(OffsetDateTime.now())
                     .build() :
                 builder
                     .setSmallImage("compass")
-                    .setLargeImage("16", "On a server")
-                    .setState("IGN: " + Minecraft.getMinecraft().getSession().getUsername())
-                    .setDetails("On a Minecraft server")
+                    .setLargeImage("16", "Pixargon Craftta oynuyor!")
+                    .setState("Nick: " + Minecraft.getMinecraft().getSession().getUsername())
+                    .setDetails("Pixargon Craftta oynuyor!")
                     .setStartTimestamp(OffsetDateTime.now())
                     .build());
         }
@@ -81,8 +81,8 @@ public class RPCUpdater {
             client.sendRichPresence(builder
                 .setSmallImage("compass")
                 .setLargeImage(String.valueOf(event.getMinigame().getId()), event.getMinigame().getScoreName())
-                .setState("IGN: " + Minecraft.getMinecraft().getSession().getUsername())
-                .setDetails("Playing " + event.getMinigame().getScoreName() + " on hypixel.net")
+                .setState("Nick: " + Minecraft.getMinecraft().getSession().getUsername())
+                .setDetails("Playing " + event.getMinigame().getScoreName() + "Pixargon craftta")
                 .setStartTimestamp(OffsetDateTime.now())
                 .build());
         }
@@ -94,9 +94,9 @@ public class RPCUpdater {
 
         client.sendRichPresence(builder
             .setSmallImage("compass")
-            .setLargeImage("hyperium", "Hyperium Client")
-            .setState("IGN: " + Minecraft.getMinecraft().getSession().getUsername())
-            .setDetails("Playing Singleplayer")
+            .setLargeImage("hyperium", "Pixargon Client")
+            .setState("Nick: " + Minecraft.getMinecraft().getSession().getUsername())
+            .setDetails("Tek oyunculu oynuyor")
             .setStartTimestamp(OffsetDateTime.now())
             .build());
     }
@@ -107,9 +107,9 @@ public class RPCUpdater {
 
         client.sendRichPresence(builder
             .setSmallImage("compass")
-            .setLargeImage("hyperium", "Hyperium Client")
-            .setState("IGN: " + Minecraft.getMinecraft().getSession().getUsername())
-            .setDetails("On the main menu")
+            .setLargeImage("hyperium", "Pixargon Client")
+            .setState("Nick: " + Minecraft.getMinecraft().getSession().getUsername())
+            .setDetails("Ana Menude")
             .setStartTimestamp(OffsetDateTime.now())
             .build());
     }

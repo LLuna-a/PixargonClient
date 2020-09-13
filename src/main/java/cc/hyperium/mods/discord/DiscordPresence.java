@@ -28,7 +28,7 @@ import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
 public class DiscordPresence {
 
-    private IPCClient client = new IPCClient(412963310867054602L);
+    private IPCClient client = new IPCClient(748856677134237798L);
 
     public void load() {
         if (Settings.DISCORD_RP) {
@@ -42,7 +42,7 @@ public class DiscordPresence {
             try {
                 client.connect(DiscordBuild.ANY);
             } catch (NoDiscordClientException | RuntimeException e) {
-                Hyperium.LOGGER.warn("No discord client found.");
+                Hyperium.LOGGER.warn("Discord Uygulaması bulunamadı.");
             }
         }
     }

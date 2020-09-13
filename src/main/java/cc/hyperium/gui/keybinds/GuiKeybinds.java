@@ -115,7 +115,7 @@ public class GuiKeybinds extends HyperiumGui {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        drawCenteredString(fontRendererObj, "Hyperium Keybinds", width / 2, topGui - 10, Color.WHITE.getRGB());
+        drawCenteredString(fontRendererObj, "Pixargon Tuşları", width / 2, topGui - 10, Color.WHITE.getRGB());
         drawRect(leftGui, topGui, rightGui, bottomGui, new Color(30, 30, 30, 100).getRGB());
 
         // Divide entries into columns.

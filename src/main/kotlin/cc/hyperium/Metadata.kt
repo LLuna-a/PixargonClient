@@ -25,11 +25,11 @@ package cc.hyperium
 
 val MODID
     @JvmName("getModid")
-    get() = "Hyperium"
+    get() = "pixargon"
 
 val VERSION
     @JvmName("getVersion")
-    get() = "1.2.3"
+    get() = "1.8.9"
 
 /**
  * @since 12 (Hyperium Build 12)

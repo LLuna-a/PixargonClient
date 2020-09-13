@@ -56,7 +56,7 @@ public class GuiHyperiumScreenMainMenu extends GuiHyperiumScreen implements GuiY
     private HyperiumFontRenderer fontRenderer;
 
     public GuiHyperiumScreenMainMenu() {
-        fontRenderer = new HyperiumFontRenderer("Raleway", 64.0F);
+        fontRenderer = new HyperiumFontRenderer("Raleway", 0.0F);
 
         if (Minecraft.getMinecraft().isFullScreen() && Settings.WINDOWED_FULLSCREEN && FIRST_START) {
             GuiHyperiumScreenMainMenu.FIRST_START = false;
@@ -97,7 +97,6 @@ public class GuiHyperiumScreenMainMenu extends GuiHyperiumScreen implements GuiY
 
         buttonList.add(new GuiButton(0, centerX - 100, centerY - 60, I18n.format("menu.singleplayer")));
         buttonList.add(new GuiButton(1, centerX - 100, centerY - 38, I18n.format("menu.multiplayer")));
-        buttonList.add(serverButton = new GuiButton(2, centerX - 100, centerY - 16, I18n.format("button.ingame.joinhypixel")));
         buttonList.add(new GuiButton(3, centerX - 100, centerY + 6, I18n.format("button.ingame.hyperiumsettings")));
         buttonList.add(new GuiButton(4, centerX - 100, centerY + 28, 98, 20, I18n.format("menu.options")));
         buttonList.add(new GuiButton(5, centerX + 2, centerY + 28, 98, 20, I18n.format("menu.quit")));
@@ -116,7 +115,7 @@ public class GuiHyperiumScreenMainMenu extends GuiHyperiumScreen implements GuiY
         renderBackgroundImage();
         ScaledResolution resolution = new ScaledResolution(mc);
 
-        fontRendererObj.drawStringWithShadow("Hyperium " + Metadata.getVersion(), 3, resolution.getScaledHeight() - fontRendererObj.FONT_HEIGHT, -1);
+        fontRendererObj.drawStringWithShadow("Pixargon Client " + Metadata.getVersion(), 3, resolution.getScaledHeight() - fontRendererObj.FONT_HEIGHT, -1);
         String creditsString = I18n.format("menu.right");
         drawString(fontRendererObj, creditsString, width - fontRendererObj.getStringWidth(creditsString) - 2, height - 20, -1);
         creditsString = createdByTeam;

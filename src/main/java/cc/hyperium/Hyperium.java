@@ -78,7 +78,7 @@ public class Hyperium {
     public static final Logger LOGGER = LogManager.getLogger(Metadata.getModid());
 
     // Create a folder instance to store everything inside of
-    public static final File folder = new File("hyperium");
+    public static final File folder = new File("Pixargon");
 
     // Create a config file to store all settings inside of
     public static final DefaultConfig CONFIG = new DefaultConfig(new File(folder, "CONFIG.json"));
@@ -222,10 +222,10 @@ public class Hyperium {
             CONFIG.register(new ToggleSprintContainer());
 
             SplashProgress.setProgress(7, I18n.format("splashprogress.startinghyperium"));
-            LOGGER.info("[Hyperium] Started!");
+            LOGGER.info("[Pixargon] Started!");
 
             // Set the window title
-            Display.setTitle("Hyperium " + Metadata.getVersion());
+            Display.setTitle("Pixargon Client" + Metadata.getVersion());
 
             SplashProgress.setProgress(8, I18n.format("splashprogress.registeringconfiguration"));
 
@@ -257,7 +257,7 @@ public class Hyperium {
 
             // Check if the user has accepted the TOS, if they have, check the Hyperium status
             if (acceptedTos) {
-                sk1erMod = new Sk1erMod("hyperium", Metadata.getVersion(), object -> {
+                sk1erMod = new Sk1erMod("Pixargon Client", Metadata.getVersion(), object -> {
                     if (object.has("enabled") && !object.optBoolean("enabled")) {
                         handlers.getHyperiumCommandHandler().clear();
                     }
@@ -341,7 +341,7 @@ public class Hyperium {
         acceptedTos = true;
 
         if (sk1erMod == null) {
-            sk1erMod = new Sk1erMod("hyperium", Metadata.getVersion());
+            sk1erMod = new Sk1erMod("Pixargon", Metadata.getVersion());
             sk1erMod.checkStatus();
         }
 

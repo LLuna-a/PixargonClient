@@ -52,7 +52,7 @@ public class KeybindButton extends GuiButton {
 
     void setListening(boolean listening) {
         this.listening = listening;
-        displayString = !listening ? getName(btnBind.getKeyCode()) : ChatColor.YELLOW + "LISTENING...";
+        displayString = !listening ? getName(btnBind.getKeyCode()) : ChatColor.YELLOW + "Dinleniyor..";
     }
 
     boolean isListening() {

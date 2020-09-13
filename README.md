@@ -1,2 +1,2 @@
-saxocular derneği başkanı imza:
-ahmet necmi
+Devamke derneği üyeleri
+- IhsanDemir

@@ -2,11 +2,16 @@ package me.semx11.autotip.core;
 
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import me.semx11.autotip.Autotip;
 import me.semx11.autotip.api.SessionKey;
-import me.semx11.autotip.api.reply.impl.KeepAliveReply;
 import me.semx11.autotip.api.reply.impl.LoginReply;
-import me.semx11.autotip.api.reply.impl.LogoutReply;
 import me.semx11.autotip.api.reply.impl.TipReply;
 import me.semx11.autotip.api.reply.impl.TipReply.Tip;
 import me.semx11.autotip.api.request.impl.KeepAliveRequest;
@@ -20,19 +25,9 @@ import me.semx11.autotip.stats.StatsRange;
 import me.semx11.autotip.util.ErrorReport;
 import me.semx11.autotip.util.HashUtil;
 import net.minecraft.util.Session;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 public class SessionManager {
-
     private final Autotip autotip;
     private final MessageUtil messageUtil;
     private final TaskManager taskManager;
@@ -40,26 +35,22 @@ public class SessionManager {
     private final Queue<Tip> tipQueue = new ConcurrentLinkedQueue<>();
 
     private LoginReply reply;
-    private SessionKey sessionKey;
+    private SessionKey sessionKey = null;
 
-    private boolean onHypixel;
-    private boolean loggedIn;
+    private boolean onHypixel = false;
+    private boolean loggedIn = false;
 
     private long lastTipWave;
     private long nextTipWave;
 
     public SessionManager(Autotip autotip) {
         this.autotip = autotip;
-        messageUtil = autotip.getMessageUtil();
-        taskManager = autotip.getTaskManager();
+        this.messageUtil = autotip.getMessageUtil();
+        this.taskManager = autotip.getTaskManager();
     }
 
     public SessionKey getKey() {
         return sessionKey;
-    }
-
-    public boolean hasKey() {
-        return sessionKey != null;
     }
 
     public boolean isOnHypixel() {
@@ -89,8 +80,8 @@ public class SessionManager {
         String uuid = profile.getId().toString().replace("-", "");
         String serverHash = HashUtil.hash(uuid + HashUtil.getNextSalt());
 
-        int statusCode = authenticate(session.getToken(), uuid, serverHash);
-        if (statusCode / 100 != 2) {
+        int statusCode = this.authenticate(session.getToken(), uuid, serverHash);
+        if (statusCode != 204) {
             messageUtil.send("&cError {} during authentication: Session servers down?", statusCode);
             return;
         }
@@ -102,15 +93,15 @@ public class SessionManager {
         long delay = lastLogin + 5000 - System.currentTimeMillis();
         delay /= 1000;
 
-        reply = taskManager.scheduleAndAwait(request::execute, (delay < 1) ? 1 : delay);
+        this.reply = taskManager.scheduleAndAwait(request::execute, (delay < 1) ? 1 : delay);
         if (reply == null || !reply.isSuccess()) {
             messageUtil.send("&cError during login: {}", reply == null ? "null" : reply.getCause());
             return;
         }
 
-        sessionKey = reply.getSessionKey();
+        this.sessionKey = reply.getSessionKey();
 
-        loggedIn = true;
+        this.loggedIn = true;
 
         long keepAlive = reply.getKeepAliveRate();
         long tipWave = reply.getTipWaveRate();
@@ -120,14 +111,11 @@ public class SessionManager {
     }
 
     public void logout() {
-        if (!loggedIn) return;
-        LogoutReply reply = LogoutRequest.of(sessionKey).execute();
-        if (!reply.isSuccess()) {
-            Autotip.LOGGER.warn("Error during logout: {}", reply.getCause());
-        }
+        if (!loggedIn)  return;
+        LogoutRequest.of(sessionKey).execute();
 
-        loggedIn = false;
-        sessionKey = null;
+        this.loggedIn = false;
+        this.sessionKey = null;
 
         taskManager.cancelTask(TaskType.KEEP_ALIVE);
         tipQueue.clear();
@@ -138,8 +126,7 @@ public class SessionManager {
             taskManager.cancelTask(TaskType.KEEP_ALIVE);
             return;
         }
-        KeepAliveReply r = KeepAliveRequest.of(sessionKey).execute();
-        if (!r.isSuccess()) Autotip.LOGGER.warn("KeepAliveRequest failed: {}", r.getCause());
+        KeepAliveRequest.of(sessionKey).execute();
     }
 
     private void tipWave() {
@@ -148,17 +135,14 @@ public class SessionManager {
             return;
         }
 
-        lastTipWave = System.currentTimeMillis();
-        nextTipWave = System.currentTimeMillis() + reply.getTipWaveRate() * 1000;
+        this.lastTipWave = System.currentTimeMillis();
+        this.nextTipWave = System.currentTimeMillis() + reply.getTipWaveRate() * 1000;
 
         TipReply r = TipRequest.of(sessionKey).execute();
         if (r.isSuccess()) {
             tipQueue.addAll(r.getTips());
-            Autotip.LOGGER.info("Current tip queue: {}",
-                StringUtils.join(tipQueue.iterator(), ", "));
         } else {
             tipQueue.addAll(TipReply.getDefault().getTips());
-            Autotip.LOGGER.info("Failed to fetch tip queue, tipping 'all' instead.");
         }
 
         long tipCycle = reply.getTipCycleRate();
@@ -171,15 +155,13 @@ public class SessionManager {
             return;
         }
 
-        Autotip.LOGGER.info("Attempting to tip: {}", tipQueue.peek().toString());
         messageUtil.sendCommand(tipQueue.poll().getAsCommand());
     }
 
     private int authenticate(String token, String uuid, String serverHash) {
-        HttpURLConnection conn = null;
         try {
             URL url = new URL("https://sessionserver.mojang.com/session/minecraft/join");
-            conn = (HttpURLConnection) url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
@@ -203,8 +185,6 @@ public class SessionManager {
         } catch (IOException e) {
             ErrorReport.reportException(e);
             return HttpStatus.SC_BAD_REQUEST;
-        } finally {
-            if (conn != null) conn.disconnect();
         }
     }
 }

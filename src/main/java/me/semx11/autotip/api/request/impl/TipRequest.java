@@ -11,7 +11,6 @@ import me.semx11.autotip.api.request.Request;
 import org.apache.http.client.methods.HttpUriRequest;
 
 public class TipRequest implements Request<TipReply> {
-
     private final SessionKey sessionKey;
 
     private TipRequest(SessionKey sessionKey) {
@@ -25,7 +24,7 @@ public class TipRequest implements Request<TipReply> {
     @Override
     public TipReply execute() {
         HttpUriRequest request = GetBuilder.of(this)
-                .addParameter("key", sessionKey)
+                .addParameter("key", this.sessionKey)
                 .build();
 
         Optional<Reply> optional = RequestHandler.getReply(this, request.getURI());
@@ -38,5 +37,4 @@ public class TipRequest implements Request<TipReply> {
     public RequestType getType() {
         return RequestType.TIP;
     }
-
 }

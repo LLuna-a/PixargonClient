@@ -5,7 +5,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class Coins implements Comparable<Coins> {
-
     private static final DecimalFormat FORMAT = (DecimalFormat) NumberFormat.getInstance(Locale.US);
 
     private int coinsSent;
@@ -17,51 +16,26 @@ public class Coins implements Comparable<Coins> {
     }
 
     public Coins(Coins that) {
-        coinsSent = that.coinsSent;
-        coinsReceived = that.coinsReceived;
+        this.coinsSent = that.coinsSent;
+        this.coinsReceived = that.coinsReceived;
     }
 
-    public String getTotal() {
-        return FORMAT.format(getTotalInt());
-    }
-
-    public int getTotalInt() {
+    private int getTotalInt() {
         return coinsSent + coinsReceived;
-    }
-
-    public String getSent() {
-        return FORMAT.format(coinsSent);
-    }
-
-    public int getSentInt() {
-        return coinsSent;
-    }
-
-    public void addSent(int coins) {
-        coinsSent += coins;
     }
 
     public String getReceived() {
         return FORMAT.format(coinsReceived);
     }
 
-    public int getReceivedInt() {
-        return coinsReceived;
-    }
-
-    public void addReceived(int coins) {
-        coinsReceived += coins;
-    }
-
-    public Coins merge(final Coins that) {
-        coinsSent += that.coinsSent;
-        coinsReceived += that.coinsReceived;
+    Coins merge(final Coins that) {
+        this.coinsSent += that.coinsSent;
+        this.coinsReceived += that.coinsReceived;
         return this;
     }
 
     @Override
     public int compareTo(Coins that) {
-        return Integer.compare(getTotalInt(), that.getTotalInt());
+        return Integer.compare(this.getTotalInt(), that.getTotalInt());
     }
-
 }

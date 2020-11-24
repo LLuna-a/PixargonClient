@@ -1,5 +1,6 @@
 package me.semx11.autotip.event.impl;
 
+import cc.hyperium.mods.sk1ercommon.Multithreading;
 import cc.hyperium.event.InvokeEvent;
 import cc.hyperium.event.network.server.ServerJoinEvent;
 import cc.hyperium.event.network.server.ServerLeaveEvent;
@@ -16,27 +17,21 @@ public class EventClientConnection implements Event {
     private final Autotip autotip;
     private final String hypixelHeader;
 
-    private String serverIp;
     private long lastLogin;
 
     public EventClientConnection(Autotip autotip) {
         this.autotip = autotip;
-        hypixelHeader = autotip.getGlobalSettings().getHypixelHeader();
+        this.hypixelHeader = autotip.getGlobalSettings().getHypixelHeader();
     }
-
-    public String getServerIp() {
-        return serverIp;
-    }
-
     public long getLastLogin() {
         return lastLogin;
     }
 
-    public Object getHeader() {
+    private Object getHeader() {
         return Autotip.tabHeader;
     }
 
-    public void setHeader(IChatComponent component) {
+    private void setHeader(IChatComponent component) {
         Minecraft.getMinecraft().ingameGUI.getTabList().setHeader(component);
     }
 
@@ -51,14 +46,15 @@ public class EventClientConnection implements Event {
 
         autotip.getMessageUtil().clearQueues();
 
-        serverIp = UniversalUtil.getRemoteAddress(event).toLowerCase();
-        lastLogin = System.currentTimeMillis();
+        this.lastLogin = System.currentTimeMillis();
 
-        taskManager.getExecutor().execute(() -> {
+        Multithreading.runAsync(() -> {
             Object header;
             int attempts = 0;
-            while ((header = getHeader()) == null) {
-                if (attempts > 15) return;
+            while ((header = this.getHeader()) == null) {
+                if (attempts > 15) {
+                    return;
+                }
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ignored) {
@@ -83,6 +79,6 @@ public class EventClientConnection implements Event {
         SessionManager manager = autotip.getSessionManager();
         manager.setOnHypixel(false);
         taskManager.executeTask(TaskType.LOGOUT, manager::logout);
-        resetHeader();
+        this.resetHeader();
     }
 }

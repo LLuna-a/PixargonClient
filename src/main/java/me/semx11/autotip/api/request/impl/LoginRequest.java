@@ -12,7 +12,6 @@ import me.semx11.autotip.api.request.Request;
 import org.apache.http.client.methods.HttpUriRequest;
 
 public class LoginRequest implements Request<LoginReply> {
-
     private final Autotip autotip;
     private final GameProfile profile;
     private final String hash;
@@ -32,13 +31,13 @@ public class LoginRequest implements Request<LoginReply> {
     @Override
     public LoginReply execute() {
         HttpUriRequest request = GetBuilder.of(this)
-                .addParameter("username", profile.getName())
-                .addParameter("uuid", profile.getId().toString().replace("-", ""))
-                .addParameter("tips", tips)
-                .addParameter("v", autotip.getVersion())
-                .addParameter("mc", autotip.getMcVersion())
+                .addParameter("username", this.profile.getName())
+                .addParameter("uuid", this.profile.getId().toString().replace("-", ""))
+                .addParameter("tips", this.tips)
+                .addParameter("v", this.autotip.getVersion())
+                .addParameter("mc", this.autotip.getMcVersion())
                 .addParameter("os", System.getProperty("os.name"))
-                .addParameter("hash", hash)
+                .addParameter("hash", this.hash)
                 .build();
 
         Optional<Reply> optional = RequestHandler.getReply(this, request.getURI());
@@ -51,5 +50,4 @@ public class LoginRequest implements Request<LoginReply> {
     public RequestType getType() {
         return RequestType.LOGIN;
     }
-
 }

@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public static String getNextSalt() {
@@ -16,17 +15,16 @@ public class HashUtil {
 
     public static String hash(String str) {
         try {
-            byte[] digest = digest(str, "SHA-1");
+            byte[] digest = digest(str);
             return new BigInteger(digest).toString(16);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    private static byte[] digest(String str, String algorithm) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(algorithm);
+    private static byte[] digest(String str) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
         byte[] strBytes = str.getBytes(StandardCharsets.UTF_8);
         return md.digest(strBytes);
     }
-
 }

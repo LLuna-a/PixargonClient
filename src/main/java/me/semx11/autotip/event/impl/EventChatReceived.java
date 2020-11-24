@@ -10,12 +10,12 @@ import me.semx11.autotip.config.GlobalSettings;
 import me.semx11.autotip.event.Event;
 import me.semx11.autotip.message.Message;
 import me.semx11.autotip.message.MessageMatcher;
+import me.semx11.autotip.message.StatsMessage;
 import me.semx11.autotip.message.StatsMessageMatcher;
 import me.semx11.autotip.stats.StatsDaily;
 import me.semx11.autotip.universal.UniversalUtil;
 
 public class EventChatReceived implements Event {
-
     private final Autotip autotip;
 
     public EventChatReceived(Autotip autotip) {
@@ -24,11 +24,9 @@ public class EventChatReceived implements Event {
 
     @InvokeEvent
     public void onChat(ServerChatEvent event) {
-        Config config = autotip.getConfig();
+        if (!autotip.getSessionManager().isOnHypixel()) return;
 
-        if (!autotip.getSessionManager().isOnHypixel()) {
-            return;
-        }
+        Config config = autotip.getConfig();
 
         String msg = UniversalUtil.getUnformattedText(event);
 
@@ -56,18 +54,20 @@ public class EventChatReceived implements Event {
         }
 
         String hover = UniversalUtil.getHoverText(event);
-        settings.getStatsMessages().forEach(message -> {
+        for (StatsMessage message : settings.getStatsMessages()) {
             StatsMessageMatcher matcher = message.getMatcherFor(msg);
-            if (!matcher.matches()) return;
-            StatsDaily stats = getStats();
+            if (!matcher.matches()) {
+                continue;
+            }
+
+            StatsDaily stats = this.getStats();
             matcher.applyStats(stats);
             message.applyHoverStats(hover, stats);
             event.setCancelled(message.shouldHide(option));
-        });
+        }
     }
 
     private StatsDaily getStats() {
-        return autotip.getStatsManager().getToday();
+        return this.autotip.getStatsManager().getToday();
     }
-
 }

@@ -1,84 +1,57 @@
 package me.semx11.autotip.util;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import me.semx11.autotip.Autotip;
 import org.apache.commons.io.FilenameUtils;
 
 public class FileUtil {
-
-    private static final DateTimeFormatter OLD_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
     private final Path userDir;
     private final Path statsDir;
 
     private LocalDate firstDate;
 
     public FileUtil(Autotip autotip) {
-        userDir = getRawPath("hyperium/autotip/" + autotip.getGameProfile().getId());
-        statsDir = getPath("stats");
+        this.userDir = this.getRawPath("mods/autotip/" + autotip.getGameProfile().getId());
+        this.statsDir = this.getPath("stats");
     }
 
     public void createDirectories() throws IOException {
-        if (!Files.exists(statsDir)) Files.createDirectories(statsDir);
+        if (!Files.exists(statsDir)) {
+            Files.createDirectories(statsDir);
+        }
     }
 
-    public Path getUserDir() {
-        return userDir;
-    }
-
-    public Path getStatsDir() {
+    private Path getStatsDir() {
         return statsDir;
     }
 
     public boolean exists(String path) {
-        return Files.exists(getPath(path));
-    }
-
-    public void delete(String path) {
-        delete(getPath(path));
-    }
-
-    public void delete(File file) {
-        delete(file.toPath());
-    }
-
-    public void delete(Path path) {
-        try {
-            Files.delete(path);
-        } catch (IOException e) {
-            Autotip.LOGGER.error("Could not delete file " + path);
-        }
-    }
-
-    public File getLegacyStatsFile(LocalDate localDate) {
-        return getFile(statsDir, localDate.format(OLD_FORMAT) + ".at");
+        return Files.exists(this.getPath(path));
     }
 
     public File getStatsFile(LocalDate localDate) {
-        return getFile(statsDir, localDate.format(ISO_LOCAL_DATE) + ".at");
+        return this.getFile(this.statsDir, localDate.format(ISO_LOCAL_DATE) + ".at");
     }
 
     public LocalDate getFirstDate() {
-        if (firstDate != null) return firstDate;
-
+        if (firstDate != null) {
+            return firstDate;
+        }
         try {
-            return firstDate = Files.list(statsDir)
+            return firstDate = Files.list(this.getStatsDir())
                     .map(this::getDateFromPath)
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElseGet(LocalDate::now);
         } catch (IOException e) {
-            Autotip.LOGGER.error("Could not list files in stats dir.");
             return LocalDate.now();
         }
     }
@@ -93,27 +66,26 @@ public class FileUtil {
     }
 
     public File getFile(String path) {
-        return getPath(path).toFile();
+        return this.getPath(path).toFile();
     }
 
-    public Path getPath(String path) {
-        return getPath(userDir, path);
+    private Path getPath(String path) {
+        return this.getPath(this.userDir, path);
     }
 
     private File getFile(Path directory, String path) {
-        return getPath(directory, path).toFile();
+        return this.getPath(directory, path).toFile();
     }
 
     private Path getPath(Path directory, String path) {
-        return directory.resolve(separator(path));
+        return directory.resolve(this.separator(path));
     }
 
     private Path getRawPath(String path) {
-        return Paths.get(separator(path));
+        return Paths.get(this.separator(path));
     }
 
     private String separator(String s) {
         return s.replaceAll("///", File.separator);
     }
-
 }

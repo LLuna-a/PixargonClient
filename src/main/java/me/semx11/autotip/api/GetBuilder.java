@@ -5,13 +5,12 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 
 public class GetBuilder {
-
     private static final String BASE_URL = "https://api.autotip.pro/";
 
     private final RequestBuilder builder;
 
     private GetBuilder(Request request) {
-        builder = RequestBuilder.get().setUri(BASE_URL + request.getType().getEndpoint());
+        this.builder = RequestBuilder.get().setUri(BASE_URL + request.getType().getEndpoint());
     }
 
     public static GetBuilder of(Request request) {
@@ -19,12 +18,11 @@ public class GetBuilder {
     }
 
     public GetBuilder addParameter(String key, Object value) {
-        builder.addParameter(key, String.valueOf(value));
+        this.builder.addParameter(key, String.valueOf(value));
         return this;
     }
 
     public HttpUriRequest build() {
-        return builder.build();
+        return this.builder.build();
     }
-
 }

@@ -9,20 +9,18 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 public interface TypeAdapter<T> extends JsonSerializer<T>, JsonDeserializer<T> {
-
     @Override
     default T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
-        return deserialize(json);
+        return this.deserialize(json);
     }
 
     @Override
     default JsonElement serialize(T src, Type typeOfSrc, JsonSerializationContext context) {
-        return serialize(src);
+        return this.serialize(src);
     }
 
     T deserialize(JsonElement json);
 
     JsonElement serialize(T src);
-
 }

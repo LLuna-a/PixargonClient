@@ -6,15 +6,10 @@ import java.util.regex.Pattern;
 import me.semx11.autotip.gson.exclusion.Exclude;
 
 public class HoverMessage extends Message {
-
     @Exclude
-    private final Map<String, HoverMessageMatcher> hoverMessageCache = new ConcurrentHashMap<>();
+    private Map<String, HoverMessageMatcher> hoverMessageCache = new ConcurrentHashMap<>();
 
     private StatsType statsType;
-
-    public HoverMessage() {
-        super();
-    }
 
     public HoverMessage(Pattern pattern, StatsType statsType) {
         super(pattern);
@@ -22,10 +17,12 @@ public class HoverMessage extends Message {
     }
 
     public HoverMessageMatcher getMatcherFor(String input) {
-        if (hoverMessageCache.containsKey(input)) return hoverMessageCache.get(input);
+        if (hoverMessageCache == null) hoverMessageCache = new ConcurrentHashMap<>();
+        if (hoverMessageCache.containsKey(input)) {
+            return hoverMessageCache.get(input);
+        }
         HoverMessageMatcher matcher = new HoverMessageMatcher(pattern, input, statsType);
         hoverMessageCache.put(input, matcher);
         return matcher;
     }
-
 }

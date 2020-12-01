@@ -4,5 +4,5 @@ Pixargon Derneği 62 JS leri
 
 
 All credit goes to Rdil this is fork of hyperiumjb 
-telifli kodlar ve resimler çıkarıldı gerisiyle istediğinizi yapın 
+Telifli kodlar ve resimler çıkarıldı gerisiyle istediğinizi yapın (Lisans koşullarına uyduğunuz sürece koşulları bilmiyorsanız bana yazın)
 bu sürümde yaşadığınız hatalarla ilgili destek sunamam bu fork normal sürüme göre çok geride 

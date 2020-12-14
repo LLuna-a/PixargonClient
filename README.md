@@ -5,13 +5,12 @@ All credit goes to Rdil ❤
 
 
 Changelog:
--
--
--
--
--
--
--
+- Removed mixinitemrenderer to support cit items
+- Changed Client Brand to PixargonClient
+- Added custom chat listeners to properly detect our server
+- Added custom popups for notifications
+- Removed unused mods 
+- Removed some menu contents
 
 
 

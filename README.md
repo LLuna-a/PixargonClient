@@ -1,8 +1,8 @@
 
 
 
-All credit goes to Rdil ❤
-
+All credit goes to Rdil And respective Hyperium team 
+V0.0.1
 
 Changelog:
 - Removed mixinitemrenderer to support cit items

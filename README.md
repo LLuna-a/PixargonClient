@@ -1,7 +1,7 @@
 
 
 
-All credit goes to Rdil And respective Hyperium team 
+All credit for base code goes to Rdil And respective Hyperium team 
 V0.0.1
 
 Changelog:
@@ -16,3 +16,4 @@ Changelog:
 
 Telifli kodlar ve resimler çıkarıldı gerisiyle istediğinizi yapın (Lisans koşullarına uyduğunuz sürece koşulları bilmiyorsanız bana yazın)
 bu sürümde yaşadığınız hatalarla ilgili destek sunamam bu fork normal sürüme göre çok geride 
+🤨

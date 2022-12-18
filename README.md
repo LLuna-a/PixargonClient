@@ -11,6 +11,7 @@ Changelog:
 - Added custom popups for notifications
 - Removed unused mods 
 - Removed some menu contents
+<img width="855" alt="image" src="https://user-images.githubusercontent.com/40887640/208317919-976df21b-51b2-4772-bdb5-2683093c9600.png">
 
 
 

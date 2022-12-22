@@ -13,7 +13,10 @@ Changelog:
 - Removed unused mods 
 - Removed some menu contents
 <img width="855" alt="image" src="https://user-images.githubusercontent.com/40887640/208317919-976df21b-51b2-4772-bdb5-2683093c9600.png">
-![image](https://user-images.githubusercontent.com/40887640/209154597-b3ecfa8f-dd66-4cf2-ab79-58759e0fe029.png)
+
+![pixargon_1 3_konsept](https://user-images.githubusercontent.com/40887640/209154972-7b529a5d-e59e-4aa0-ae87-64bdd6fc8ed4.jpg)
+
+
 <img width="252" alt="Ekran Resmi 2022-12-22 17 22 38" src="https://user-images.githubusercontent.com/40887640/209154755-cdd12503-259a-4a48-841e-37bfe30287bc.png">
 
 
